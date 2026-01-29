@@ -1,8 +1,51 @@
 "use client";
-import React, { useState, useEffect } from "react";
 
-const page = () => {
+import React, { useState, useEffect, useMemo, useRef, Suspense } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import Tilt from "react-parallax-tilt";
+import * as THREE from "three";
+
+/* ================= PURE THREE STARS ================= */
+const StarsBackground = () => {
+  const pointsRef = useRef<THREE.Points>(null);
+
+  const geometry = useMemo(() => {
+    const geo = new THREE.BufferGeometry();
+    const positions = new Float32Array(3000 * 3);
+
+    for (let i = 0; i < positions.length; i++) {
+      positions[i] = (Math.random() - 0.5) * 10;
+    }
+
+    geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    return geo;
+  }, []);
+
+  const material = useMemo(
+    () =>
+      new THREE.PointsMaterial({
+        color: "#ffffff",
+        size: 0.015,
+        transparent: true,
+        opacity: 0.8,
+        depthWrite: false,
+      }),
+    []
+  );
+
+  useFrame((_, delta) => {
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y -= delta * 0.05;
+    }
+  });
+
+  return <points ref={pointsRef} geometry={geometry} material={material} />;
+};
+
+/* ================= MAIN PAGE ================= */
+export default function Page() {
   const [roleIndex, setRoleIndex] = useState(0);
+
   const roles = [
     "AI Web Application Developer",
     "Custom GPT Developer",
@@ -12,23 +55,29 @@ const page = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 2000); // change text every 2 seconds
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
-  // inline animation style for floating
-  const floatStyle = {
-    animation: "float 3s ease-in-out infinite",
-  };
-
   return (
-    <div className="w-full min-h-screen bg-slate-950 text-white">
+    <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
+
+      {/* ===== 3D BACKGROUND ===== */}
+      <div className="absolute inset-0 -z-10">
+        <Canvas camera={{ position: [0, 0, 2] }}>
+          <ambientLight intensity={0.6} />
+          <Suspense fallback={null}>
+            <StarsBackground />
+          </Suspense>
+        </Canvas>
+      </div>
 
       {/* ================= HERO ================= */}
-      <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
-        
+      <section className="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-16 items-center">
+
+        {/* ===== LEFT CONTENT ===== */}
         <div className="space-y-6">
-          <h1 className="text-4xl md:text-5xl font-bold">
+          <h1 className="text-4xl md:text-5xl font-extrabold">
             Hi, I'm <span className="text-purple-400">Mohsin</span>
           </h1>
 
@@ -36,11 +85,10 @@ const page = () => {
             AI Web Application <br /> & Custom GPT Developer
           </h2>
 
-          <p className="text-purple-300 font-medium">
-            AI Automation Expert
+          <p className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 font-bold text-xl min-h-[28px]">
+            {roles[roleIndex]}
           </p>
 
-          {/* ===== BUTTONS ===== */}
           <div className="flex gap-4 pt-4">
             <a
               href="https://rok-two.vercel.app/"
@@ -58,118 +106,51 @@ const page = () => {
           </div>
         </div>
 
-        {/* ================= FLOATING IMAGE WITH CHANGING TEXT ================= */}
-        <div className="flex flex-col items-center">
-          <div
-            className="w-64 md:w-80 rounded-xl shadow-2xl overflow-hidden"
-            style={floatStyle}
-          >
-            <img
-              src="/mohsin-bhowana.jpg"
-              alt="Mohsin Bhowana"
-              className="w-full rounded-xl"
-            />
+        {/* ===== RIGHT IMAGE (ARSALAN / ZESHAN STYLE EFFECT) ===== */}
+        <Tilt tiltMaxAngleX={25} tiltMaxAngleY={25} scale={1.05}>
+          <div className="w-[280px] h-[340px] md:w-[360px] md:h-[440px]
+                          rounded-2xl border border-white/10
+                          bg-white/5 backdrop-blur-xl
+                          shadow-[0_20px_60px_rgba(145,94,255,0.3)]
+                          flex items-center justify-center">
+
+            <div className="flex flex-col items-center animate-float">
+
+              <div className="px-4 py-1 mb-6 rounded-full
+                              border border-cyan-500/30
+                              bg-cyan-500/10 text-cyan-400
+                              text-[10px] font-bold tracking-widest uppercase">
+                Next Gen AI Developer
+              </div>
+
+              <div className="w-28 h-28 md:w-40 md:h-40 rounded-full
+                              border-4 border-purple-500/50 overflow-hidden
+                              shadow-lg shadow-purple-500/30">
+                <img
+                  src="/mohsin-bhowana.jpg"
+                  alt="Mohsin Bhowana"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <p className="mt-4 text-lg font-extrabold tracking-wide">
+                Mohsin <span className="text-purple-400">Bhowana</span>
+              </p>
+            </div>
           </div>
-          <p className="text-purple-400 mt-4 font-semibold text-center text-lg">
-            {roles[roleIndex]}
-          </p>
-        </div>
+        </Tilt>
       </section>
 
-      {/* ================= ABOUT ================= */}
-      <section className="text-center px-6 pb-20">
-        <p className="text-lg md:text-xl text-slate-300 max-w-4xl mx-auto">
-          I create powerful{" "}
-          <span className="text-purple-400">AI-based web applications</span>,{" "}
-          <span className="text-purple-400">custom GPTs</span>, and{" "}
-          <span className="text-purple-400">automation solutions</span>.
-        </p>
-      </section>
-
-      {/* ================= SERVICES ================= */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="flex justify-center mb-4">
-          <div className="h-[2px] w-32 bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
-        </div>
-
-        <h2 className="text-3xl font-bold text-center mb-4">
-          Services I Offer
-        </h2>
-
-        <div className="flex justify-center mb-12">
-          <div className="h-[2px] w-48 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-slate-900 p-6 rounded-xl text-center">
-            <img src="/service1.png" className="w-16 mx-auto mb-4" />
-            <h3 className="font-semibold">AI Web Apps Development</h3>
-          </div>
-
-          <div className="bg-slate-900 p-6 rounded-xl text-center">
-            <img src="/service2.png" className="w-16 mx-auto mb-4" />
-            <h3 className="font-semibold">
-              Custom GPT <br /> & Control Solutions
-            </h3>
-          </div>
-
-          <div className="bg-slate-900 p-6 rounded-xl text-center">
-            <img src="/service3.png" className="w-16 mx-auto mb-4" />
-            <h3 className="font-semibold">AI Automation Workflows</h3>
-          </div>
-        </div>
-      </section>
-
-      {/* ================= FEATURED PROJECTS ================= */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="flex justify-center mb-4">
-          <div className="h-[2px] w-32 bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
-        </div>
-
-        <h2 className="text-3xl font-bold text-center mb-4">
-          Featured Projects
-        </h2>
-
-        <div className="flex justify-center mb-12">
-          <div className="h-[2px] w-48 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-slate-900 rounded-xl overflow-hidden">
-            <img src="/project1.png" className="w-full h-48 object-cover" />
-            <p className="p-4 text-center">AI-Wise Applications</p>
-          </div>
-
-          <div className="bg-slate-900 rounded-xl overflow-hidden">
-            <img src="/project2.png" className="w-full h-48 object-cover" />
-            <p className="p-4 text-center">Custom GPT for E-commerce</p>
-          </div>
-
-          <div className="bg-slate-900 rounded-xl overflow-hidden">
-            <img src="/project3.png" className="w-full h-48 object-cover" />
-            <p className="p-4 text-center">Automate Lead Generation</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ================= CTA ================= */}
-      <section className="text-center py-24 px-6">
-        <h2 className="text-2xl md:text-3xl font-bold">
-          Want to build a cutting-edge AI solution?
-        </h2>
-      </section>
-
-      {/* ================= INLINE FLOAT KEYFRAMES ================= */}
-      <style>
-        {`
-          @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-          }
-        `}
-      </style>
+      {/* ===== FLOAT ANIMATION ===== */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-12px); }
+        }
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
-};
-
-export default page;
+}

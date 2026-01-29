@@ -27,16 +27,20 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="logo">AI</div>
 
-        <div className="links">
-          <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
-        </div>
+        {/* RIGHT SIDE */}
+        <div className="right-menu">
+          <div className="links">
+            <Link href="/">Home</Link>
+            <Link href="/about">About</Link>
+          </div>
 
-        <button className="contact-btn" onClick={handleContactClick}>
-          Switch AI
-        </button>
+          <button className="contact-btn" onClick={handleContactClick}>
+            Switch AI
+          </button>
+        </div>
       </nav>
 
+      {/* MODAL */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
@@ -49,6 +53,7 @@ const Navbar = () => {
         </div>
       )}
 
+      {/* STYLES */}
       <style jsx>{`
         .navbar {
           display: flex;
@@ -64,14 +69,21 @@ const Navbar = () => {
           font-weight: bold;
         }
 
+        .right-menu {
+          display: flex;
+          align-items: center;
+          gap: 40px;
+        }
+
         .links {
           display: flex;
-          gap: 60px; /* Flex gap added */
+          gap: 60px;
         }
 
         .links a {
           color: white;
           text-decoration: none;
+          font-weight: 500;
         }
 
         .contact-btn {
@@ -81,6 +93,7 @@ const Navbar = () => {
           background: linear-gradient(90deg, #6a11cb, #2575fc);
           color: white;
           cursor: pointer;
+          font-weight: 500;
         }
 
         .modal-overlay {
@@ -90,6 +103,7 @@ const Navbar = () => {
           display: flex;
           align-items: center;
           justify-content: center;
+          z-index: 100;
         }
 
         .modal {
@@ -100,18 +114,17 @@ const Navbar = () => {
           width: 300px;
         }
 
+        .modal h3 {
+          margin-bottom: 20px;
+          color: #000;
+        }
+
         .modal-buttons button {
           margin: 0 10px;
           padding: 8px 16px;
           border-radius: 5px;
           border: none;
           cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-          .links {
-            display: none;
-          }
         }
       `}</style>
     </>
