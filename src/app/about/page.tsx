@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import React from "react";
 
 export default function AboutPage() {
   return (
@@ -118,9 +119,15 @@ export default function AboutPage() {
 
       {/* CTA */}
       <section className="text-center py-12">
-        <button className="px-10 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-lg font-semibold shadow-lg hover:opacity-90 transition">
-          Let's Talk
-        </button>
+        <a
+          href="https://www.threads.com/@chmohsin.bhowana?xmt=AQF0-hxt2fGiJh584FYW7VFTgD672P9OiAiX20Efyxsz2wM"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="px-10 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-lg font-semibold shadow-lg hover:opacity-90 transition">
+            Let's Talk
+          </button>
+        </a>
       </section>
 
     </div>

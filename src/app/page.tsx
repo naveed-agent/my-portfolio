@@ -1,6 +1,26 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
 const page = () => {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const roles = [
+    "AI Web Application Developer",
+    "Custom GPT Developer",
+    "AI Automation Expert",
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % roles.length);
+    }, 2000); // change text every 2 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  // inline animation style for floating
+  const floatStyle = {
+    animation: "float 3s ease-in-out infinite",
+  };
+
   return (
     <div className="w-full min-h-screen bg-slate-950 text-white">
 
@@ -20,7 +40,7 @@ const page = () => {
             AI Automation Expert
           </p>
 
-          {/* ===== BUTTONS (ONLY CHANGE IS LINK) ===== */}
+          {/* ===== BUTTONS ===== */}
           <div className="flex gap-4 pt-4">
             <a
               href="https://rok-two.vercel.app/"
@@ -38,12 +58,21 @@ const page = () => {
           </div>
         </div>
 
-        <div className="flex justify-center">
-          <img
-            src="/mohsin-bhowana.jpg"
-            alt="Mohsin Bhowana"
-            className="w-64 md:w-80 rounded-xl shadow-2xl"
-          />
+        {/* ================= FLOATING IMAGE WITH CHANGING TEXT ================= */}
+        <div className="flex flex-col items-center">
+          <div
+            className="w-64 md:w-80 rounded-xl shadow-2xl overflow-hidden"
+            style={floatStyle}
+          >
+            <img
+              src="/mohsin-bhowana.jpg"
+              alt="Mohsin Bhowana"
+              className="w-full rounded-xl"
+            />
+          </div>
+          <p className="text-purple-400 mt-4 font-semibold text-center text-lg">
+            {roles[roleIndex]}
+          </p>
         </div>
       </section>
 
@@ -59,8 +88,6 @@ const page = () => {
 
       {/* ================= SERVICES ================= */}
       <section className="max-w-7xl mx-auto px-6 py-20">
-
-        {/* TOP LINE */}
         <div className="flex justify-center mb-4">
           <div className="h-[2px] w-32 bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
         </div>
@@ -69,7 +96,6 @@ const page = () => {
           Services I Offer
         </h2>
 
-        {/* BOTTOM LINE */}
         <div className="flex justify-center mb-12">
           <div className="h-[2px] w-48 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
         </div>
@@ -96,8 +122,6 @@ const page = () => {
 
       {/* ================= FEATURED PROJECTS ================= */}
       <section className="max-w-7xl mx-auto px-6 py-20">
-
-        {/* TOP LINE */}
         <div className="flex justify-center mb-4">
           <div className="h-[2px] w-32 bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
         </div>
@@ -106,7 +130,6 @@ const page = () => {
           Featured Projects
         </h2>
 
-        {/* BOTTOM LINE */}
         <div className="flex justify-center mb-12">
           <div className="h-[2px] w-48 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
         </div>
@@ -136,6 +159,15 @@ const page = () => {
         </h2>
       </section>
 
+      {/* ================= INLINE FLOAT KEYFRAMES ================= */}
+      <style>
+        {`
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+          }
+        `}
+      </style>
     </div>
   );
 };
