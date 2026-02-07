@@ -4,6 +4,39 @@ import Image from "next/image";
 import React from "react";
 
 export default function AboutPage() {
+
+  // 🚀 EXTRA STRONG 3D TILT
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const width = rect.width;
+    const height = rect.height;
+
+    const rotateY = ((x / width) - 0.5) * 55;   // increased strength
+    const rotateX = -((y / height) - 0.5) * 55;
+
+    card.style.transform = `
+      perspective(600px)
+      rotateX(${rotateX}deg)
+      rotateY(${rotateY}deg)
+      scale(1.12)
+    `;
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = `
+      perspective(600px)
+      rotateX(0deg)
+      rotateY(0deg)
+      scale(1)
+    `;
+  };
+
   return (
     <div className="min-h-screen w-full bg-[#0a0f2c] text-white font-sans">
 
@@ -28,38 +61,27 @@ export default function AboutPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
 
-          <div className="bg-[#141a3b] p-6 rounded-xl shadow-lg border border-indigo-500/20 flex flex-col items-center">
-            <Image 
-              src="/app.png" 
-              alt="AI Web Applications" 
-              width={80} 
-              height={80} 
-              className="w-20 h-20 rounded-xl mb-3 object-cover"
-            />
-            <h3 className="text-lg font-medium">AI Web Applications</h3>
-          </div>
-
-          <div className="bg-[#141a3b] p-6 rounded-xl shadow-lg border border-indigo-500/20 flex flex-col items-center">
-            <Image 
-              src="/d.png"
-              alt="Custom GPT Development"
-              width={80} 
-              height={80}
-              className="w-20 h-20 rounded-xl mb-3 object-cover"
-            />
-            <h3 className="text-lg font-medium">Custom GPT Development</h3>
-          </div>
-
-          <div className="bg-[#141a3b] p-6 rounded-xl shadow-lg border border-indigo-500/20 flex flex-col items-center">
-            <Image 
-              src="/ch.png" 
-              alt="AI Chatbots"
-              width={80} 
-              height={80}
-              className="w-20 h-20 rounded-xl mb-3 object-cover"
-            />
-            <h3 className="text-lg font-medium">AI Chatbots</h3>
-          </div>
+          {[
+            { src: "/app.png", alt: "AI Web Applications", label: "AI Web Applications" },
+            { src: "/d.png", alt: "Custom GPT Development", label: "Custom GPT Development" },
+            { src: "/ch.png", alt: "AI Chatbots", label: "AI Chatbots" },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="bg-[#141a3b] p-6 rounded-xl shadow-lg border border-indigo-500/20 flex flex-col items-center transition-transform duration-75"
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Image 
+                src={item.src}
+                alt={item.alt}
+                width={80} 
+                height={80}
+                className="w-20 h-20 rounded-xl mb-3 object-cover"
+              />
+              <h3 className="text-lg font-medium">{item.label}</h3>
+            </div>
+          ))}
 
         </div>
       </section>
@@ -70,49 +92,28 @@ export default function AboutPage() {
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
 
-          <div className="bg-[#141a3b] p-5 rounded-xl border border-indigo-500/20 flex flex-col items-center">
-            <Image 
-              src="/kk.png"
-              alt="Python"
-              width={70} 
-              height={70}
-              className="w-16 h-16 rounded-lg mb-3 object-cover"
-            />
-            Python
-          </div>
-
-          <div className="bg-[#141a3b] p-5 rounded-xl border border-indigo-500/20 flex flex-col items-center">
-            <Image 
-              src="/ll.png"
-              alt="OpenAI"
-              width={70} 
-              height={70}
-              className="w-16 h-16 rounded-lg mb-3 object-cover"
-            />
-            OpenAI
-          </div>
-
-          <div className="bg-[#141a3b] p-5 rounded-xl border border-indigo-500/20 flex flex-col items-center">
-            <Image 
-              src="/long.png"
-              alt="LangChain"
-              width={70} 
-              height={70}
-              className="w-16 h-16 rounded-lg mb-3 object-cover"
-            />
-            LangChain
-          </div>
-
-          <div className="bg-[#141a3b] p-5 rounded-xl border border-indigo-500/20 flex flex-col items-center">
-            <Image 
-              src="/open.png"
-              alt="OpenAI API"
-              width={70} 
-              height={70}
-              className="w-16 h-16 rounded-lg mb-3 object-cover"
-            />
-            OpenAI API
-          </div>
+          {[
+            { src: "/kk.png", alt: "Python", label: "Python" },
+            { src: "/ll.png", alt: "OpenAI", label: "OpenAI" },
+            { src: "/long.png", alt: "LangChain", label: "LangChain" },
+            { src: "/open.png", alt: "OpenAI API", label: "OpenAI API" },
+          ].map((tool, index) => (
+            <div
+              key={index}
+              className="bg-[#141a3b] p-5 rounded-xl border border-indigo-500/20 flex flex-col items-center transition-transform duration-75"
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Image 
+                src={tool.src}
+                alt={tool.alt}
+                width={70} 
+                height={70}
+                className="w-16 h-16 rounded-lg mb-3 object-cover"
+              />
+              {tool.label}
+            </div>
+          ))}
 
         </div>
       </section>

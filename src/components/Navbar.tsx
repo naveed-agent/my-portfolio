@@ -24,17 +24,21 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar">
-        <div className="logo">AI</div>
+      <nav className="w-full bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 text-white px-6 py-4 flex justify-between items-center flex-wrap sm:flex-nowrap">
+        <div className="logo text-2xl font-bold">AI</div>
 
         {/* RIGHT SIDE */}
-        <div className="right-menu">
-          <div className="links">
-            <Link href="/">Home</Link>
-            <Link href="/about">About</Link>
-          </div>
-
-          <button className="contact-btn" onClick={handleContactClick}>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8 w-full sm:w-auto mt-3 sm:mt-0">
+          <Link href="/" className="hover:text-purple-400 font-medium">
+            Home
+          </Link>
+          <Link href="/about" className="hover:text-purple-400 font-medium">
+            About
+          </Link>
+          <button
+            onClick={handleContactClick}
+            className="px-4 py-2 rounded-md bg-gradient-to-r from-purple-600 to-blue-500 font-medium hover:opacity-90"
+          >
             Switch AI
           </button>
         </div>
@@ -42,91 +46,26 @@ const Navbar = () => {
 
       {/* MODAL */}
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h3>Do you want to contact?</h3>
-            <div className="modal-buttons">
-              <button onClick={handleYes}>Yes</button>
-              <button onClick={handleNo}>No</button>
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg text-center w-72">
+            <h3 className="mb-4 text-black font-semibold text-lg">Do you want to contact?</h3>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handleYes}
+                className="px-4 py-2 rounded-md bg-blue-600 text-white font-medium hover:opacity-90"
+              >
+                Yes
+              </button>
+              <button
+                onClick={handleNo}
+                className="px-4 py-2 rounded-md bg-gray-400 text-white font-medium hover:opacity-90"
+              >
+                No
+              </button>
             </div>
           </div>
         </div>
       )}
-
-      {/* STYLES */}
-      <style jsx>{`
-        .navbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 15px 30px;
-          background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
-          color: white;
-        }
-
-        .logo {
-          font-size: 24px;
-          font-weight: bold;
-        }
-
-        .right-menu {
-          display: flex;
-          align-items: center;
-          gap: 40px;
-        }
-
-        .links {
-          display: flex;
-          gap: 60px;
-        }
-
-        .links a {
-          color: white;
-          text-decoration: none;
-          font-weight: 500;
-        }
-
-        .contact-btn {
-          padding: 10px 20px;
-          border-radius: 8px;
-          border: none;
-          background: linear-gradient(90deg, #6a11cb, #2575fc);
-          color: white;
-          cursor: pointer;
-          font-weight: 500;
-        }
-
-        .modal-overlay {
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.6);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 100;
-        }
-
-        .modal {
-          background: white;
-          padding: 25px;
-          border-radius: 10px;
-          text-align: center;
-          width: 300px;
-        }
-
-        .modal h3 {
-          margin-bottom: 20px;
-          color: #000;
-        }
-
-        .modal-buttons button {
-          margin: 0 10px;
-          padding: 8px 16px;
-          border-radius: 5px;
-          border: none;
-          cursor: pointer;
-        }
-      `}</style>
     </>
   );
 };
